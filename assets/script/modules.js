@@ -218,7 +218,7 @@ const VIEW = (function () {
             document.getElementById("amountProducts")
                 .addEventListener('click', function (e) {
                     e.preventDefault();
-                    document.location.href = "/assets/pages/cart.html";
+                    document.location.href = "../assets/pages/cart.html";
                 })
         },
         showProductCount: function () {
