@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#26e0da">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Howest Shop</title>
+    <link rel="stylesheet" href="../style/screen.css">
+</head>
+<body>
+    <header>
+        <h1>howest shop</h1>
+        <button id="order">Order now</button>
+    </header>
+    <main>
+        <ul id="cart">
+            Loading Cart...
+        </ul>
+        <p id="totalRow">Total: <span id="totalPrice">0</span> EUR</p>
+        <form method="post" id="order-form" style="display: none">
+            <h2>Order form</h2>
+            <fieldset>
+                <label for="first_name">First name</label>
+                <input type="text" id="first_name" placeholder="First name" required/>
+            </fieldset>
+            <fieldset>
+                <label for="last_name">Last name</label>
+                <input type="text" id="last_name" placeholder="Last name" required/>
+            </fieldset>
+            <fieldset>
+                <label for="address_1">Address 1</label>
+                <input type="text" id="address_1" placeholder="Address 1" required/>
+            </fieldset>
+            <fieldset>
+                <label for="address_2">Address 2</label>
+                <input type="text" id="address_2" placeholder="Address 2"/>
+            </fieldset>
+            <fieldset>
+                <label for="city">City</label>
+                <input type="text" id="city" placeholder="City" required/>
+            </fieldset>
+            <fieldset>
+                <label for="state">State</label>
+                <input type="text" id="state" placeholder="State"/>
+            </fieldset>
+            <fieldset>
+                <label for="postcode">Postcode</label>
+                <input type="text" id="postcode" placeholder="Postcode" required/>
+            </fieldset>
+            <fieldset>
+                <label for="country">Country</label>
+                <input type="text" id="country" placeholder="Country" required/>
+            </fieldset>
+            <fieldset>
+                <label for="email">Email</label>
+                <input type="text" id="email" placeholder="Email" required/>
+            </fieldset>
+            <fieldset>
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" placeholder="Phone" required/>
+            </fieldset>
+            <fieldset>
+                <input type="submit" id="submit-order" value="Send Order"/>
+            </fieldset>
+        </form>
+    </main>
+    <footer>
+
+    </footer>
+    <script type="text/javascript" src="../script/localforage/localforage.js"></script>
+    <script type="text/javascript" src="../script/storage.js"></script>
+    <script type="text/javascript" src="../script/modules.js"></script>
+    <script type="text/javascript" src="../script/cart.js"></script>
+</body>
+</html>
