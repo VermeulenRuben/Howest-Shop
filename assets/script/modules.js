@@ -165,7 +165,7 @@ const VIEW = (function () {
                 b.id = pr.id;
                 b.innerText = "Add to Cart";
                 if(pr.images.length > 0) i.src = pr.images[0].src;
-                else i.src = "http://localhost/howest-shop/wp-content/uploads/woocommerce-placeholder.png";
+                else i.src = "https://ruwbz.be/wp-content/uploads/woocommerce-placeholder.png";
                 p.innerText = pr.name;
                 s.innerText = `${pr.price} EUR`;
                 e.appendChild(i); e.appendChild(p);
