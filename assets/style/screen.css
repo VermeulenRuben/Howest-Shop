@@ -104,7 +104,6 @@ body, header>*, main>*, footer>*{
 }
 
 #cart li p:nth-child(2){
-    flex-grow: 2;
     text-align: center;
 }
 
