@@ -105,6 +105,7 @@ const FETCH = (function () {
                 {}, cb, "consumerCred.json");
         },
         sendOrder: function (body, cb) {
+            console.log(body);
             fetchRequest(`${apiRoot}/orders`,
                 {
                     method: 'POST',
@@ -183,11 +184,13 @@ const VIEW = (function () {
 
             document.getElementById("order-form").addEventListener('submit', function (e) {
                 e.preventDefault();
-                let inputs = [document.getElementById("order-form").querySelectorAll('input[type=text]')];
+                let inputs = Array.from(document.getElementById("order-form").querySelectorAll('input[type=text]'));
+                console.log(inputs);
                 if(!(inputs.filter(i => i.value === "") > 0 && inputs.some(r => ["address_2", "state"].includes(r.id))))
                 {
                     let billing = {};
                     for(let i = 0; i<inputs.length; i++){
+                        console.log(inputs[i].value);
                         billing[inputs[i].id] = inputs[i].value;
                     }
                     STORAGE.getCart(function (line_items) {
