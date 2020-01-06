@@ -71,6 +71,14 @@ body, header>*, main>*, footer>*{
     right: 0.5rem;
 }
 
+.cart-remove{
+    border: 1px solid black;
+    color: black;
+    background-color: red;
+    border-radius: 50%;
+    padding: 0 5px 0 5px;
+}
+
 #amountProducts{
     cursor: pointer;
     font-size: 1.2rem;

@@ -13,7 +13,7 @@
 //     };
 //
 //     return {
-//         productsOutCart: function (cart, cb) {
+//         lineItemsOutCart: function (cart, cb) {
 //             Promise.all(cart.map(p =>
 //                 fetch(`${apiRoot}/products/${p.product_id}`, {
 //                     headers: {'Authorization': apiToken}
@@ -85,7 +85,7 @@ const FETCH = (function () {
     };
 
     return {
-        productsOutCart: function (cart, cb) {
+        lineItemsOutCart: function (cart, cb) {
             getParams("../../consumerCred.json" ,function ( params) {
                 Promise.all(cart.map(p =>
                     fetch(`${apiRoot}/products/${p.product_id}${params}`)
@@ -100,12 +100,25 @@ const FETCH = (function () {
             })
         },
 
-        products: function (cb) {
+        productsOutCart: function (cart, cb) {
+            getParams("../../consumerCred.json" ,function ( params) {
+                Promise.all(cart.map(p =>
+                    fetch(`${apiRoot}/products/${p.product_id}${params}`)
+                        .then((response) => {
+                            response = response.json();
+                            return response;
+                        })
+                )).then(function (products) {
+                    cb(products)
+                });
+            })
+        },
+
+        products: function (path, cb) {
             fetchRequest(`${apiRoot}/products`,
-                {}, cb, "consumerCred.json");
+                {}, cb, path);
         },
         sendOrder: function (body, cb) {
-            console.log(body);
             fetchRequest(`${apiRoot}/orders`,
                 {
                     method: 'POST',
@@ -129,6 +142,13 @@ const MAPPING = (function () {
                 categories: product.categories,
                 images: product.images
             }
+        },
+
+        product2LineItem: function (product_id) {
+            return {
+                product_id: product_id,
+                quantity: 1
+            }
         }
     }
 })();
@@ -142,17 +162,21 @@ const VIEW = (function () {
                 let p1 = document.createElement("p");
                 let p2 = document.createElement("p");
                 let p3 = document.createElement("p");
+                let x = document.createElement("p");
+                x.id = product.id;
                 p1.innerText = product.name;
                 p2.innerText = `${product.price} EUR x ${product.quantity}`;
                 p3.innerText = `${product.price*product.quantity} EUR`;
+                x.innerText = "x";
+                x.classList.add("cart-remove");
                 e.classList.add("cart-product");
                 e.id = product.id;
-                e.appendChild(p1); e.appendChild(p2); e.appendChild(p3);
+                e.appendChild(p1); e.appendChild(p2);
+                e.appendChild(p3); e.appendChild(x);
                 document.getElementById("cart").appendChild(e);
             })
         },
         showProducts: function (products) {
-            console.log(products);
             document.getElementById("shop").innerText = "";
             products.forEach(pr => {
                 let e = document.createElement("li");
@@ -185,12 +209,10 @@ const VIEW = (function () {
             document.getElementById("order-form").addEventListener('submit', function (e) {
                 e.preventDefault();
                 let inputs = Array.from(document.getElementById("order-form").querySelectorAll('input[type=text]'));
-                console.log(inputs);
                 if(!(inputs.filter(i => i.value === "") > 0 && inputs.some(r => ["address_2", "state"].includes(r.id))))
                 {
                     let billing = {};
                     for(let i = 0; i<inputs.length; i++){
-                        console.log(inputs[i].value);
                         billing[inputs[i].id] = inputs[i].value;
                     }
                     STORAGE.getCart(function (line_items) {
@@ -206,8 +228,27 @@ const VIEW = (function () {
                         })
                     })
                 }
-            })
+            });
+
+            document.addEventListener('click', function (e) {
+                e.preventDefault();
+                if(e.target && e.target.classList.contains("cart-remove")){
+                    STORAGE.removeItemFromCart(e.target.id, function (line_items) {
+                        let total = 0;
+                        FETCH.productsOutCart(line_items, function (products) {
+                            products.forEach(p => {
+                                p.quantity = line_items.find(pr => pr.id = p.id).quantity;
+                                total += p.price*p.quantity;
+                            });
+                            document.getElementById("cart").innerText = "";
+                            VIEW.productsToCartView(products);
+                            VIEW.showPriceTotal(total);
+                        })
+                    });
+                }
+            });
         },
+
         addShopEventListeners: function () {
             document.addEventListener('click', function (e) {
                 e.preventDefault();

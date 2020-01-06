@@ -3,7 +3,7 @@
 const PROGRAM = (function () {
     return {
         init: function () {
-            FETCH.products(function (array) {
+            FETCH.products("consumerCred.json", function (array) {
                 VIEW.showProducts(array.map(MAPPING.json2Product));
                 VIEW.addShopEventListeners();
                 VIEW.showProductCount();

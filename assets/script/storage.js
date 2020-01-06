@@ -31,7 +31,7 @@ const STORAGE = (function () {
         addItemToCart: function (product, cb) {
             this.getCart(function (cart) {
                 if(!cart.map(p => p.product_id).includes(product)){
-                    cart.push({product_id: product, quantity: 1});
+                    cart.push(MAPPING.product2LineItem(product));
                 } else {
                     cart.find(p => p.product_id === product).quantity++;
                 }
@@ -41,11 +41,11 @@ const STORAGE = (function () {
             });
         },
 
-        removeItemFromCart: function (product, cb) {
+        removeItemFromCart: function (product_id, cb) {
             this.getCart(function (cart) {
-                cart = cart.map(p => p.product_id).filter(p => p !== product);
+                cart = cart.filter(p => p.product_id !== product_id);
                 localforage.setItem(CART_KEY, cart, function () {
-                    cb()
+                    cb(cart)
                 });
             });
 
